@@ -1,19 +1,40 @@
 <template>
   <div id="app">
-    <router-link to="/seller">seller</router-link>
-    <router-link to="/goods">goods</router-link>
-    <router-link to="/ratings">ratings</router-link>
+    <header-view :logo="logoMsg"></header-view>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import router from './js/routers'
+    import headerView from 'components/header/header'
+    import Vue from 'vue';
+    import VueResource from 'vue-resource';
+    Vue.use(VueResource);
 
-export default {
-  name: 'App',
-  router
-}
+    export default {
+        data(){
+            return{
+                logoMsg: null
+            }
+        },
+        components: { headerView },
+        name: 'App',
+        created(){
+           this.$http.get('./api/seller').then(function(res){
+             res = res.body.data;
+             this.logoMsg = res;
+             console.log(res)
+           });
+           this.$http.get('./api/goods').then(function(res){
+             res = res.body.data;
+             console.log(res)
+           });
+           this.$http.get('./api/ratings').then(function(res){
+             res = res.body.data;
+             console.log(res)
+           })
+         }
+    }
 </script>
 
 <style>
