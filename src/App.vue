@@ -1,7 +1,15 @@
 <template>
   <div id="app">
-    <header-view :logo="logoMsg"></header-view>
-    <router-view></router-view>
+    <header-view :seller="seller"></header-view>
+    <div>
+      <div class="flex">
+        <router-link to="/seller">1</router-link>
+        <router-link to="/goods">2</router-link>
+        <router-link to="/ratings">3</router-link>
+      </div>
+      <router-view></router-view>
+    </div>
+
   </div>
 </template>
 
@@ -14,29 +22,41 @@
     export default {
         data(){
             return{
-                logoMsg: null
+                seller: ""
             }
         },
         components: { headerView },
         name: 'App',
-        created(){
+        mounted(){
            this.$http.get('./api/seller').then(function(res){
-             res = res.body.data;
-             this.logoMsg = res;
-             console.log(res)
+               res = res.body;
+                if(res.code==0){
+                 this.seller = res.data;
+              }
+
            });
            this.$http.get('./api/goods').then(function(res){
              res = res.body.data;
-             console.log(res)
            });
            this.$http.get('./api/ratings').then(function(res){
              res = res.body.data;
-             console.log(res)
            })
          }
     }
 </script>
 
-<style>
-
+<style lang="stylus" rel="stylesheet/stylus">
+  .flex
+      display:flex
+      &::before
+          content ''
+          display block
+          width 100%
+          position: absolute
+          height 1px
+          background-color #000
+      a
+        flex:1;
+        text-align center
+        text-decoration none
 </style>
