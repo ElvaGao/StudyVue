@@ -27,7 +27,7 @@
         },
         components: { headerView },
         name: 'App',
-        mounted(){
+        created(){
            this.$http.get('./api/seller').then(function(res){
                res = res.body;
                 if(res.code==0){
